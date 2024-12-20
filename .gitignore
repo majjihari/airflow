@@ -110,8 +110,6 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
-.env.local
 .autoenv*.zsh
 
 # virtualenv
@@ -168,7 +166,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.vscode/*
 !.vscode/extensions.json
 /.vite/
 .pnpm-store
@@ -257,3 +254,4 @@ airflow-build-dockerfile*
 
 # Temporary ignore uv.lock until we integrate it fully in our constraint preparation mechanism
 /uv.lock
+config.bat
