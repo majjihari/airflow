@@ -46,6 +46,7 @@ from tests_common.test_utils.version_compat import AIRFLOW_V_2_10_PLUS, AIRFLOW_
 
 if TYPE_CHECKING:
     from datetime import datetime
+
     try:
         from airflow.sdk.definitions.context import Context
     except ImportError:
@@ -72,7 +73,7 @@ if AIRFLOW_V_2_10_PLUS:
 
 
 if AIRFLOW_V_3_0_PLUS:
-    from airflow.sdk.api.datamodels._generated import TaskInstance as SDKTaskInstance
+    from airflow.sdk.api.datamodels._generated import BundleInfo, TaskInstance as SDKTaskInstance
     from airflow.sdk.execution_time import task_runner
     from airflow.sdk.execution_time.comms import StartupDetails
     from airflow.sdk.execution_time.task_runner import RuntimeTaskInstance, parse
@@ -426,6 +427,7 @@ def make_ti_context() -> MakeTIContextCallable:
                 run_type=run_type,  # type: ignore
             ),
             task_reschedule_count=task_reschedule_count,
+            max_tries=1,
         )
 
     return _make_context
@@ -446,6 +448,7 @@ def test_extractor_manager_gets_data_from_pythonoperator_tasksdk(
                 out.write("test")
 
     task = PythonOperator(task_id="test_task_extractor_pythonoperator", python_callable=use_read)
+    FAKE_BUNDLE = BundleInfo.model_construct(name="anything", version="any")
 
     what = StartupDetails(
         ti=SDKTaskInstance(
@@ -456,7 +459,8 @@ def test_extractor_manager_gets_data_from_pythonoperator_tasksdk(
             try_number=1,
             start_date=timezone.utcnow(),
         ),
-        file="",
+        dag_rel_path="",
+        bundle_info=FAKE_BUNDLE,
         requests_fd=0,
         ti_context=make_ti_context(),
     )

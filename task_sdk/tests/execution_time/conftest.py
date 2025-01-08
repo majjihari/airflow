@@ -146,7 +146,12 @@ def create_runtime_ti(mocked_parse, make_ti_context):
 
         startup_details = StartupDetails(
             ti=TaskInstance(
-                id=ti_id, task_id=task.task_id, dag_id=dag_id, run_id=run_id, try_number=try_number
+                id=ti_id,
+                task_id=task.task_id,
+                dag_id=dag_id,
+                run_id=run_id,
+                try_number=try_number,
+                start_date=start_date,
             ),
             dag_rel_path="",
             bundle_info=BundleInfo.model_construct(name="anything", version="any"),

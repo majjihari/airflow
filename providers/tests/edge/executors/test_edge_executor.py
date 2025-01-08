@@ -300,6 +300,7 @@ class TestEdgeExecutor:
                 pool_slots=1,
                 queue="default",
                 priority_weight=1,
+                start_date=timezone.utcnow(),
             ),
             dag_rel_path="dummy.py",
             log_path="dummy.log",

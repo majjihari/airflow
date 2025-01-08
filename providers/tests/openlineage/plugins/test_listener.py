@@ -171,40 +171,40 @@ class TestOpenLineageListenerAirflow2:
 
         :return: TaskInstance: The created TaskInstance object.
 
-    This function creates a DAG and a PythonOperator task with the provided
-    python_callable. It generates a unique run ID and creates a DAG run. This
-    setup is useful for testing different scenarios in Airflow tasks.
+        This function creates a DAG and a PythonOperator task with the provided
+        python_callable. It generates a unique run ID and creates a DAG run. This
+        setup is useful for testing different scenarios in Airflow tasks.
 
-        :Example:
+            :Example:
 
-            def sample_callable(**kwargs):
-                print("Hello World")
+                def sample_callable(**kwargs):
+                    print("Hello World")
 
-        task_instance = _create_test_dag_and_task(sample_callable, "sample_scenario")
-        # Use task_instance to simulate running a task in a test.
-    """
-    date = dt.datetime(2022, 1, 1)
-    dag = DAG(
-        f"test_{scenario_name}",
-        schedule=None,
-        start_date=date,
-    )
-    t = PythonOperator(task_id=f"test_task_{scenario_name}", dag=dag, python_callable=python_callable)
-    run_id = str(uuid.uuid1())
-    dagrun_kwargs: dict = {
-        "dag_version": None,
-        "logical_date": date,
-        "triggered_by": types.DagRunTriggeredByType.TEST,
-    }
-    dagrun = dag.create_dagrun(
-        run_id=run_id,
-        data_interval=(date, date),
-        run_type=types.DagRunType.MANUAL,
-        state=DagRunState.QUEUED,
-        **dagrun_kwargs,
-    )
-    task_instance = TaskInstance(t, run_id=run_id)
-    return dagrun, task_instance
+            task_instance = _create_test_dag_and_task(sample_callable, "sample_scenario")
+            # Use task_instance to simulate running a task in a test.
+        """
+        date = dt.datetime(2022, 1, 1)
+        dag = DAG(
+            f"test_{scenario_name}",
+            schedule=None,
+            start_date=date,
+        )
+        t = PythonOperator(task_id=f"test_task_{scenario_name}", dag=dag, python_callable=python_callable)
+        run_id = str(uuid.uuid1())
+        dagrun_kwargs: dict = {
+            "dag_version": None,
+            "logical_date": date,
+            "triggered_by": types.DagRunTriggeredByType.TEST,
+        }
+        dagrun = dag.create_dagrun(
+            run_id=run_id,
+            data_interval=(date, date),
+            run_type=types.DagRunType.MANUAL,
+            state=DagRunState.QUEUED,
+            **dagrun_kwargs,
+        )
+        task_instance = TaskInstance(t, run_id=run_id)
+        return dagrun, task_instance
 
     def _create_listener_and_task_instance(self) -> tuple[OpenLineageListener, TaskInstance]:
         """Creates and configures an OpenLineageListener instance and a mock TaskInstance for testing.
@@ -712,7 +712,7 @@ class TestOpenLineageListenerAirflow3:
         dag = DAG(
             "test",
             schedule=None,
-            start_date=dt.datetime(2022, 1, 1),
+            start_date=date,
             user_defined_macros={"render_df": render_df},
             params={"df": {"col": [1, 2]}},
         )
@@ -805,18 +805,26 @@ class TestOpenLineageListenerAirflow3:
             task_instance = _create_test_dag_and_task(sample_callable, "sample_scenario")
             # Use task_instance to simulate running a task in a test.
         """
+        date = dt.datetime(2022, 1, 1)
         dag = DAG(
             f"test_{scenario_name}",
             schedule=None,
-            start_date=dt.datetime(2022, 1, 1),
+            start_date=date,
         )
         t = PythonOperator(task_id=f"test_task_{scenario_name}", dag=dag, python_callable=python_callable)
         run_id = str(uuid.uuid1())
-        triggered_by_kwargs = {"triggered_by": DagRunTriggeredByType.TEST}
+        dagrun_kwargs = {
+            "dag_version": None,
+            "logical_date": date,
+            "triggered_by": types.DagRunTriggeredByType.TEST,
+        }
+
         dagrun = dag.create_dagrun(
-            state=State.NONE,  # type: ignore
             run_id=run_id,
-            **triggered_by_kwargs,  # type: ignore
+            data_interval=(date, date),
+            run_type=types.DagRunType.MANUAL,
+            state=DagRunState.QUEUED,
+            **dagrun_kwargs,
         )
         task_instance = TaskInstance(t, run_id=run_id)
         return dagrun, task_instance
@@ -898,6 +906,7 @@ class TestOpenLineageListenerAirflow3:
                     conf=None,
                 ),
                 task_reschedule_count=0,
+                max_tries=1,
             ),
         )
 
