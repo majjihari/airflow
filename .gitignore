@@ -108,7 +108,6 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
 .autoenv*.zsh
 
 # virtualenv
@@ -127,7 +126,6 @@ ENV/
 *.iml
 
 # Visual Studio Code
-.vscode/
 
 # vim
 *.swp
@@ -242,3 +240,4 @@ licenses/LICENSES-ui.txt
 
 # airflow-build-dockerfile and correconding ignore file
 airflow-build-dockerfile*
+config.bat
