@@ -4,9 +4,9 @@
   "description": "Apache Airflow is a platform to programmatically author, schedule and monitor workflows.",
   "scripts": {
     "test": "jest",
-    "dev": "NODE_ENV=development webpack --watch --progress --devtool eval-cheap-source-map --mode development",
+    "dev": "node init && NODE_ENV=development webpack --watch --progress --devtool eval-cheap-source-map --mode development",
     "prod": "NODE_ENV=production node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js --mode production --progress",
-    "build": "NODE_ENV=production webpack --progress --mode production",
+    "build": "node init && NODE_ENV=production webpack --progress --mode production",
     "lint": "eslint --ignore-path=.eslintignore --max-warnings=0 --ext .js,.jsx,.ts,.tsx . && tsc",
     "lint:fix": "eslint --fix --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx . && tsc",
     "format": "yarn prettier --write .",
