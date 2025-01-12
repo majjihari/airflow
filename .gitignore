@@ -105,7 +105,6 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
 .autoenv*.zsh
 
 # virtualenv
@@ -124,7 +123,6 @@ ENV/
 *.iml
 
 # Visual Studio Code
-.vscode/
 
 # vim
 *.swp
@@ -234,3 +232,4 @@ licenses/LICENSES-ui.txt
 
 # Dask Executor tests generate this directory
 /tests/executors/dask-worker-space/
+config.bat
