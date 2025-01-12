@@ -107,7 +107,6 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
 .autoenv*.zsh
 
 # virtualenv
@@ -126,7 +125,6 @@ ENV/
 *.iml
 
 # Visual Studio Code
-.vscode/
 
 # vim
 *.swp
@@ -233,3 +231,4 @@ licenses/LICENSES-ui.txt
 
 # used to checkout target-branch in CI
 /target-airflow
+config.bat
