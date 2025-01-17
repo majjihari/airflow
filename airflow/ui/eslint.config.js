@@ -27,6 +27,9 @@ import { reactRules } from "./rules/react.js";
 import { stylisticRules } from "./rules/stylistic.js";
 import { typescriptRules } from "./rules/typescript.js";
 import { unicornRules } from "./rules/unicorn.js";
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 /**
  * ESLint configuration.
