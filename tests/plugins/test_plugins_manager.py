@@ -28,6 +28,7 @@ from unittest import mock
 
 import pytest
 
+from airflow.exceptions import RemovedInAirflow3Warning
 from airflow.hooks.base import BaseHook
 from airflow.listeners.listener import get_listener_manager
 from airflow.plugins_manager import AirflowPlugin
@@ -269,6 +270,17 @@ class TestPluginsManager:
                 "Please contact the author of the plugin.",
             ),
         ]
+
+    def test_deprecate_ti_deps(self):
+        class DeprecatedTIDeps(AirflowPlugin):
+            name = "ti_deps"
+
+            ti_deps = [mock.MagicMock()]
+
+        with mock_plugin_manager(plugins=[DeprecatedTIDeps()]), pytest.warns(RemovedInAirflow3Warning):
+            from airflow import plugins_manager
+
+            plugins_manager.initialize_ti_deps_plugins()
 
     def test_should_not_warning_about_fab_plugins(self, caplog):
         class AirflowAdminViewsPlugin(AirflowPlugin):
